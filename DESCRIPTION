@@ -1,0 +1,18 @@
+Package: emclustr
+Title: Mixture Modeling for Model-Based Clustering and Classification
+Version: 0.1
+Authors@R: "Alex Whitworth <whitworth.alex@gmail.com> [aut, cre]"
+Description: emclustr is a package for finite mixture modeling via EM
+    algorithm. Its main extensions to the "mclust" package are (1) mixture
+    modeling non-Gaussian distributed data, and (2) mixture modeling for
+    Gaussian distributed data with missing values.
+Depends:
+    R (>= 3.1.0)
+Suggests:
+    mclust
+License: GPL
+References: C. Fraley, A. E. Raftery, T. B. Murphy and L. Scrucca (2012).
+    mclust Version 4 for R: Normal Mixture Modeling for Model-Based Clustering,
+    Classification, and Density Estimation. Technical Report No. 597,
+    Department of Statistics, University of Washington.
+LazyData: true
