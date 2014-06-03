@@ -15,8 +15,8 @@ gen_clust(obs, p, mean, sd)
 \item{sd}{A vector of standard deviations, one for each dimension of the cluster.}
 }
 \value{
-Returns an `obs x p` matrix where each column $p_i$ is an obs-length Gaussian
-distributed vector with $N(\mu= mean[i], \sigma= sd[i])$.
+Returns an `obs x p` matrix where each column \eqn{p_i} is an obs-length Gaussian
+distributed vector with \eqn{N(\mu= mean[i], \sigma= sd[i])}.
 }
 \description{
 This function generates a random p-dimensional multivariate normal cluster.
