@@ -9,3 +9,4 @@ Gaussian distributed data with missing values
     
 #### Repo Notes
 June 2014 - version 0.1
+Jan 2015 -- NOTE: I plan to completely re-write this in the spring 2015 using library(mvnnorm) and add data augmentation algorithms. V0.1 is essentially a very raw alpha version.
