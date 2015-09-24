@@ -16,9 +16,10 @@ em_clust_norm(data, nclust, itmax = 10000, tol = 10^-6)
 \item{tol}{Tuning parameter for convergence. Defaults to 10^-6.}
 }
 \value{
-A list with four elements \code{it} - the number of iterations, \code{clust_prop}
-the estimated mixture proportions, \code{clust_params} the estimated mixture parameters, and
-\code{mix_est} a vector of the estimated mixture for each data point.
+A list containing: \code{it} the number of iterations; \code{clust_prop}
+the estimated mixture proportions; \code{clust_params} the estimated mixture parameters;
+\code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the
+log likelihood of the data; \code{bic} the modeled BIC.
 }
 \description{
 This function uses the EM algorithm to do clustering of k-mixture components
@@ -28,5 +29,8 @@ where each component is one-dimensional \eqn{N(\mu, \sigma^2)}.
 \dontshow{c1 <- rnorm(100, 5, 1); c2 <- rnorm(100, 15, 1); c3 <- rnorm(100, 20, 1)
 c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
 norm_ex <- em_clust_norm(c_tot, nclust= 3)
+}
+\seealso{
+\code{\link{em_clust_mvn}}, \code{\link{em_clust_mvn_miss}}, \code{\link{gen_clust}}
 }
 

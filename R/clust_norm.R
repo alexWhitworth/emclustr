@@ -6,9 +6,11 @@
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-6.
-#' @return A list with four elements \code{it} - the number of iterations, \code{clust_prop} 
-#' the estimated mixture proportions, \code{clust_params} the estimated mixture parameters, and
-#' \code{mix_est} a vector of the estimated mixture for each data point.
+#' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
+#' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
+#' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
+#' log likelihood of the data; \code{bic} the modeled BIC.
+#' @seealso \code{\link{em_clust_mvn}}, \code{\link{em_clust_mvn_miss}}, \code{\link{gen_clust}}
 #' @export
 #' @examples
 #' \dontshow{c1 <- rnorm(100, 5, 1); c2 <- rnorm(100, 15, 1); c3 <- rnorm(100, 20, 1)

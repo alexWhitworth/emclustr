@@ -10,15 +10,26 @@
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-6.
-#' @return A list with four elements: \code{it} - the number of iterations, \code{clust_prop} 
-#' the estimated mixture proportions, \code{clust_params} a list of the estimated mixture parameters, 
+#' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
+#' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
+#' \code{mix_est} a vector of the estimated mixture for each data point; \code{pseudo_log_lik} 
+#' the pseudo log likelihood of the data; \code{bic} the modeled BIC.
 #' and \code{mix_est} a vector of the estimated mixture for each data point.
+#' @seealso \code{\link{em_clust_mvn}}, \code{\link{em_clust_norm}}, \code{\link{gen_clust}}
 #' @export
+#' @examples \dontshow{
+#' c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
+#' c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
+#' c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
+#' c_tot <- rbind(c1,c2,c3); rm(c1,c2,c3)
+#' c_tot <- apply(c_tot, 2, function(x) {
+#'   samp <- sample(1:length(x), floor(length(x) * .2), replace=FALSE)
+#'   x[samp] <- NA
+#'   return(x)
+#' })}
+#' mvn_miss <- em_clust_mvn_miss(c_tot, nclust= 3)
 
-# 02. Update 201C HW2 algorithm to P-dim
-#----------------------------------
 em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {
-  require(mvtnorm)
   # 01. initiate values
   data <- data.matrix(data) # coerce
   n      <- nrow(data); p <- ncol(data); it <- 1
@@ -89,7 +100,7 @@ em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {
       bic <- -2 * log_lik + (log(n) * (nclust + length(mu1)))
       
       return(list(it= it, clust_prop= lam_1, clust_params= out, mix_est= m_max,
-                  psuedo_log_lik= log_lik, bic= bic))
+                  pseudo_log_lik= log_lik, bic= bic))
     }
     # 04. update for next iteration
     it <- it + 1

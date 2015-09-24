@@ -7,15 +7,19 @@
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-6.
-#' @return A list with four elements \code{it} - the number of iterations, \code{clust_prop} 
-#' the estimated mixture proportions, \code{clust_params} a list of the estimated mixture parameters, 
-#' and \code{mix_est} a vector of the estimated mixture for each data point.
+#' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
+#' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
+#' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
+#' log likelihood of the data; \code{bic} the modeled BIC.
+#' @seealso \code{\link{em_clust_norm}}, \code{\link{em_clust_mvn_miss}}, \code{\link{gen_clust}}
 #' @export
+#' @examples \dontshow{c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
+#' c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
+#' c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
+#' c_tot <- rbind(c1,c2,c3); rm(c1,c2,c3)}
+#' mvn <- em_clust_mvn(c_tot, nclust= 3)
 
-# 02. Update 201C HW2 algorithm to P-dim
-#----------------------------------
 em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
-  require(mvtnorm)
   # 01. initiate values
   data <- data.matrix(data) # coerce
   n      <- nrow(data); p <- ncol(data); it <- 1

@@ -16,9 +16,10 @@ em_clust_exp(data, nclust, itmax = 10000, tol = 10^-6)
 \item{tol}{Tuning parameter for convergence. Defaults to 10^-6.}
 }
 \value{
-A list with four elements \code{it} - the number of iterations, \code{clust_prop}
-the estimated mixture proportions, \code{clust_params} the estimated mixture parameters, and
-\code{mix_est} a vector of the estimated mixture for each data point.
+A list containing: \code{it} the number of iterations; \code{clust_prop}
+the estimated mixture proportions; \code{clust_params} the estimated mixture parameters;
+\code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the
+log likelihood of the data; \code{bic} the modeled BIC.
 }
 \description{
 This function uses the EM algorithm to do clustering of k-mixture components
@@ -27,6 +28,6 @@ where each component is \eqn{exponential(\lambda)}.
 \examples{
 \dontshow{c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100);
 c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
-exp_ex <- em_clust_exp(c_tot, nclust= 3)
+exp_clust <- em_clust_exp(c_tot, nclust= 3)
 }
 

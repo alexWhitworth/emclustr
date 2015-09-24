@@ -16,8 +16,10 @@ em_clust_mvn_miss(data, nclust, itmax = 10000, tol = 10^-6)
 \item{tol}{Tuning parameter for convergence. Defaults to 10^-6.}
 }
 \value{
-A list with four elements: \code{it} - the number of iterations, \code{clust_prop}
-the estimated mixture proportions, \code{clust_params} a list of the estimated mixture parameters,
+A list containing: \code{it} the number of iterations; \code{clust_prop}
+the estimated mixture proportions; \code{clust_params} the estimated mixture parameters;
+\code{mix_est} a vector of the estimated mixture for each data point; \code{pseudo_log_lik}
+the pseudo log likelihood of the data; \code{bic} the modeled BIC.
 and \code{mix_est} a vector of the estimated mixture for each data point.
 }
 \description{
@@ -25,5 +27,21 @@ This function uses the EM algorithm to do clustering in P-dimensions.
 It assumes all clusters are spherically \eqn{N(\mu_m, \Sigma_m I)} and allows for
 missing data. Observations may have missing data elements but entire rows may
 not be missing.
+}
+\examples{
+\dontshow{
+c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
+c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
+c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
+c_tot <- rbind(c1,c2,c3); rm(c1,c2,c3)
+c_tot <- apply(c_tot, 2, function(x) {
+  samp <- sample(1:length(x), floor(length(x) * .2), replace=FALSE)
+  x[samp] <- NA
+  return(x)
+})}
+mvn_miss <- em_clust_mvn_miss(c_tot, nclust= 3)
+}
+\seealso{
+\code{\link{em_clust_mvn}}, \code{\link{em_clust_norm}}, \code{\link{gen_clust}}
 }
 

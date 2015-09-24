@@ -7,17 +7,16 @@
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-6.
-#' @return A list with four elements \code{it} - the number of iterations, \code{clust_prop} 
-#' the estimated mixture proportions, \code{clust_params} the estimated mixture parameters, and
-#' \code{mix_est} a vector of the estimated mixture for each data point.
+#' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
+#' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
+#' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
+#' log likelihood of the data; \code{bic} the modeled BIC.
 #' @export
 #' @examples
 #' \dontshow{c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100); 
 #' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
-#' exp_ex <- em_clust_exp(c_tot, nclust= 3)
+#' exp_clust <- em_clust_exp(c_tot, nclust= 3)
 
-# 02. clustering with poisson distribution
-#----------------------------------
 em_clust_exp <- function(data, nclust, itmax= 10000, tol= 10^-6) {  
   if (typeof(data) == "character") {
     stop("Please input numeric data.")
@@ -74,13 +73,4 @@ em_clust_exp <- function(data, nclust, itmax= 10000, tol= 10^-6) {
 }
 
 
-# setwd("~/UCLA/201 - Methods Sequence/201C/Project/code")
-# source("./emclustr/R/helper_funcs.R")
-# 
-# c1 <- rexp(100, 1)
-# c2 <- rexp(100, 50)
-# c3 <- rexp(100, 100)
-# c_tot <- c(c1, c2, c3); rm(c1,c2,c3)
-# 
-# # test algorithm
-# test02 <- em_clust_exp(c_tot, nclust= 3) 
+

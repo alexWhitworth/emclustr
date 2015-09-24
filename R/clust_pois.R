@@ -6,17 +6,16 @@
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-6.
-#' @return A list with four elements \code{it} - the number of iterations, \code{clust_prop} 
-#' the estimated mixture proportions, \code{clust_params} the estimated mixture parameters, and
-#' \code{mix_est} a vector of the estimated mixture for each data point.
+#' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
+#' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
+#' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
+#' log likelihood of the data; \code{bic} the modeled BIC.
 #' @export
 #' @examples
 #' \dontshow{c1 <- rpois(100, 3); c2 <- rpois(100, 20); c3 <- rpois(100, 100)
 #' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
-#' pois_ex <- em_clust_pois(c_tot, nclust= 3) 
+#' pois <- em_clust_pois(c_tot, nclust= 3) 
 
-# 02. clustering with poisson distribution
-#----------------------------------
 em_clust_pois <- function(data, nclust, itmax= 10000, tol= 10^-6) {  
   if (typeof(data) == "character") {
     stop("Please input numeric data.")
