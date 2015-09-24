@@ -43,7 +43,7 @@ em_clust_norm <- function(data, nclust, itmax= 10000, tol= 10^-6) {
     w_mat <- n_mat <- matrix(NA, ncol= nclust, nrow= n)
     d_vec <- vector(mode= "numeric", length= n)
     for (i in 1:nclust) {
-      n_mat[, i] <- lam_0[i] * exp(-1/(2 * sqrt(sig_0[i])) * (data - mu_0[i])^2) / (2 * sqrt(sig_0[i]))
+      n_mat[, i] <- lam_0[i] * dnorm(data, mean= mu_0[i],, sd= sqrt(sig_0[i]))
     }
     d_vec <- apply(n_mat, 1, sum)
     w_mat <- n_mat / d_vec
@@ -59,8 +59,17 @@ em_clust_norm <- function(data, nclust, itmax= 10000, tol= 10^-6) {
     
     # 03. check to exit
     if ((supDist(mu_0, mu_1) < tol & supDist(lam_0, lam_1) < tol) || it == itmax) {
+      # calculate final parameters for return
       m_max <- apply(w_mat, 1, which.max)
-      return(list(it= it, clust_prop= lam_1, clust_params= cbind(mu_1, sig_1), mix_est= m_max))
+      # log-lik 
+      for (i in 1:nclust) {
+        n_mat[,i] <- lam_1[i] * dnorm(data, mean=mu_1[i], sd= sqrt(sig_1[i]), log= FALSE)
+      }
+      log_lik <- sum(apply(n_mat,1, function(x) {log(sum(x))}))
+      bic <- -2 * log_lik + (log(n) * 2 * nclust)
+      
+      return(list(it= it, clust_prop= lam_1, clust_params= cbind(mean=mu_1, var=sig_1), mix_est= m_max,
+                  log_lik= log_lik, bic= bic))
     }
     # 04. update for next iteration
     it <- it + 1

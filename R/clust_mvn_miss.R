@@ -18,6 +18,7 @@
 # 02. Update 201C HW2 algorithm to P-dim
 #----------------------------------
 em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {
+  require(mvtnorm)
   # 01. initiate values
   data <- data.matrix(data) # coerce
   n      <- nrow(data); p <- ncol(data); it <- 1
@@ -57,13 +58,10 @@ em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {
     # (2.a) E-Step
     # calculate E(clust_m|...) for all data points -- ie w_mat
     for (i in 1:nclust) {
-      exp_mat1[,i] <- apply(data2, 1, diff_func, mean_vec= mu0[i,]) / (2 * sig_0[i])
-      n_mat[, i] <- log(lam_0[i]) - p/2 * log(sig_0[i]) - exp_mat1[,i]
+      n_mat[,i] <- lam_0[i] * dmvnorm(data2, mean= mu0[i,], sigma= diag(rep(sig_0[i], p)))
     }
-    for (i in 1:n) {
-      d_vec[i] <- log_plus2(lam_0, sig_0^(p/2), -exp_mat1[i,])
-    }
-    w_mat <- exp(n_mat - d_vec) 
+    d_vec <- apply(n_mat, 1, sum)
+    w_mat <- n_mat / d_vec
     
     # (2.b) M-Step
     # update mixture proportions
@@ -84,9 +82,14 @@ em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {
       for (i in 1:nclust) { 
         assign(paste0("N_", i), list(mu= mu1[i,], Sigma= sig_1[i]))
         out[[i]] <- get(paste0("N_", i)) 
+        n_mat[,i] <- lam_1[i] * dmvnorm(data2, mean= mu1[i,], sigma= diag(rep(sig_1[i], p)))
       }
       m_max <- apply(w_mat, 1, which.max)
-      return(list(it= it, clust_prop= lam_1, clust_params= out, mix_est= m_max))
+      log_lik <- sum(apply(n_mat,1, function(x) {log(sum(x))}))
+      bic <- -2 * log_lik + (log(n) * (nclust + length(mu1)))
+      
+      return(list(it= it, clust_prop= lam_1, clust_params= out, mix_est= m_max,
+                  psuedo_log_lik= log_lik, bic= bic))
     }
     # 04. update for next iteration
     it <- it + 1

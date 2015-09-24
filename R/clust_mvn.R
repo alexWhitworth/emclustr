@@ -15,6 +15,7 @@
 # 02. Update 201C HW2 algorithm to P-dim
 #----------------------------------
 em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
+  require(mvtnorm)
   # 01. initiate values
   data <- data.matrix(data) # coerce
   n      <- nrow(data); p <- ncol(data); it <- 1
@@ -31,23 +32,19 @@ em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
                            xmin= init_m[i,], xmax= init_m[i+1,])
   }
   # initialize values needed for EM algorithm
+  n_mat <- matrix(NA, ncol= nclust, nrow= n)
   data_ssq <- apply(data^2, 1, sum) # internal- cluster var
-  exp_mat1 <- n_mat <- matrix(NA, ncol= nclust, nrow= n)
-  internal_vec1 <- c(rep(NA, nclust))
-  d_vec <- vector(mode= "numeric", length= n)
+  #d_vec <- vector(mode= "numeric", length= n)
   
   # 02. iterate to convergence:
   repeat{
     # (a) E-Step
     # calculate E(clust_m|...) for all data points -- ie w_mat
     for (i in 1:nclust) {
-      exp_mat1[,i] <- apply(data, 1, diff_func, mean_vec= mu0[i,]) / (2 * sig_0[i])
-      n_mat[, i] <- log(lam_0[i]) - p/2 * log(sig_0[i]) - exp_mat1[,i]
-      }
-    for (i in 1:n) {
-      d_vec[i] <- log_plus2(lam_0, sig_0^(p/2), -exp_mat1[i,])
+      n_mat[,i] <- lam_0[i] * dmvnorm(data, mean= mu0[i,], sigma= diag(rep(sig_0[i], p)))
     }
-    w_mat <- exp(n_mat - d_vec) 
+    d_vec <- apply(n_mat, 1, sum)
+    w_mat <- n_mat / d_vec
     
     # (b) M-Step
     # update mixture proportions
@@ -70,7 +67,15 @@ em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
         out[[i]] <- get(paste0("N_", i)) 
       }
       m_max <- apply(w_mat, 1, which.max)
-      return(list(it= it, clust_prop= lam_1, clust_params= out, mix_est= m_max))
+      
+      for (i in 1:nclust) {
+        n_mat[,i] <- lam_1[i] * dmvnorm(data, mean= mu1[i,], sigma= diag(rep(sig_1[i], p)))
+      }
+      log_lik <- sum(apply(n_mat,1, function(x) {log(sum(x))}))
+      bic <- -2 * log_lik + (log(n) * (nclust + length(mu1)))
+      
+      return(list(it= it, clust_prop= lam_1, clust_params= out, mix_est= m_max,
+                  log_lik= log_lik, bic= bic))
     }
     # 04. update for next iteration
     it <- it + 1

@@ -38,12 +38,11 @@ em_clust_exp <- function(data, nclust, itmax= 10000, tol= 10^-6) {
   }  
   
   # 02. iterate to convergence:
+  n_mat <- matrix(NA, ncol= nclust, nrow= n)
   repeat{
     # calculate E(clust_m|...) for all data points
-    w_mat <- n_mat <- matrix(NA, ncol= nclust, nrow= n)
-    d_vec <- vector(mode= "numeric", length= n)
     for (i in 1:nclust) {
-      n_mat[, i] <- mu_0[i] * (mu_0[i]^data * exp(-mu_0[i] * data))
+      n_mat[, i] <- lam_0[i] * dexp(data, rate= mu_0[i])
     }
     d_vec <- apply(n_mat, 1, sum)
     w_mat <- n_mat / d_vec
@@ -56,11 +55,32 @@ em_clust_exp <- function(data, nclust, itmax= 10000, tol= 10^-6) {
     
     # 03. check to exit
     if ((supDist(mu_0, mu_1) < tol & supDist(lam_0, lam_1) < tol) || it == itmax) {
+      # calculate final parameters for return
       m_max <- apply(w_mat, 1, which.max)
-      return(list(it= it, clust_prop= lam_1, clust_params= mu_1, mix_est= m_max))
+      # log-lik 
+      for (i in 1:nclust) {
+        n_mat[,i] <- lam_1[i] * dexp(data, rate= mu_1[i], log= FALSE)
+      }
+      log_lik <- sum(apply(n_mat,1, function(x) {log(sum(x))}))
+      bic <- -2 * log_lik + log(n) * nclust
+      
+      return(list(it= it, clust_prop= lam_1, clust_params= mu_1, mix_est= m_max,
+                  log_lik= log_lik, bic= bic))
     }
     # 04. update for next iteration
     it <- it + 1
     mu_0 <- mu_1; lam_0 <- lam_1
   }
 }
+
+
+# setwd("~/UCLA/201 - Methods Sequence/201C/Project/code")
+# source("./emclustr/R/helper_funcs.R")
+# 
+# c1 <- rexp(100, 1)
+# c2 <- rexp(100, 50)
+# c3 <- rexp(100, 100)
+# c_tot <- c(c1, c2, c3); rm(c1,c2,c3)
+# 
+# # test algorithm
+# test02 <- em_clust_exp(c_tot, nclust= 3) 
