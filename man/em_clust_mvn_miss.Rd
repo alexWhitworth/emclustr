@@ -29,7 +29,7 @@ missing data. Observations may have missing data elements but entire rows may
 not be missing.
 }
 \examples{
-\dontshow{
+# generate test data
 c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
 c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
 c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
@@ -38,7 +38,8 @@ c_tot <- apply(c_tot, 2, function(x) {
   samp <- sample(1:length(x), floor(length(x) * .2), replace=FALSE)
   x[samp] <- NA
   return(x)
-})}
+})
+# run example
 mvn_miss <- em_clust_mvn_miss(c_tot, nclust= 3)
 }
 \seealso{

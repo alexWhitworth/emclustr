@@ -17,7 +17,8 @@
 #' and \code{mix_est} a vector of the estimated mixture for each data point.
 #' @seealso \code{\link{em_clust_mvn}}, \code{\link{em_clust_norm}}, \code{\link{gen_clust}}
 #' @export
-#' @examples \dontshow{
+#' @examples
+#' # generate test data
 #' c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
 #' c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
 #' c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
@@ -26,7 +27,8 @@
 #'   samp <- sample(1:length(x), floor(length(x) * .2), replace=FALSE)
 #'   x[samp] <- NA
 #'   return(x)
-#' })}
+#' })
+#' # run example
 #' mvn_miss <- em_clust_mvn_miss(c_tot, nclust= 3)
 
 em_clust_mvn_miss <- function(data, nclust, itmax= 10000, tol= 10^-6) {

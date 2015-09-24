@@ -26,8 +26,10 @@ This function uses the EM algorithm to do clustering of k-mixture components
 where each component is \eqn{exponential(\lambda)}.
 }
 \examples{
-\dontshow{c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100);
-c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
+# generate test data
+c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100);
+c_tot <- c(c1, c2, c3); rm(c1,c2,c3)
+# run example
 exp_clust <- em_clust_exp(c_tot, nclust= 3)
 }
 

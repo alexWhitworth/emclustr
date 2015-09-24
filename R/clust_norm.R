@@ -13,8 +13,10 @@
 #' @seealso \code{\link{em_clust_mvn}}, \code{\link{em_clust_mvn_miss}}, \code{\link{gen_clust}}
 #' @export
 #' @examples
-#' \dontshow{c1 <- rnorm(100, 5, 1); c2 <- rnorm(100, 15, 1); c3 <- rnorm(100, 20, 1)
-#' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
+#' # generate test data
+#' c1 <- rnorm(100, 5, 1); c2 <- rnorm(100, 15, 1); c3 <- rnorm(100, 20, 1)
+#' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)
+#' # run example
 #' norm_ex <- em_clust_norm(c_tot, nclust= 3) 
 
 # 02. clustering with poisson distribution

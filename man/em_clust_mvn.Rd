@@ -26,10 +26,12 @@ This function uses the EM algorithm to do clustering in P-dimensions.
 It assumes all clusters are spherically \eqn{N(\mu_m, \Sigma_m I)}.
 }
 \examples{
-\dontshow{c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
+# generate test data
+c1 <- gen_clust(100, 10, mean= c(seq(-8, 10, 2)), sd= rep(1, 10))
 c2 <- gen_clust(100, 10, mean= rep(0, 10), sd= rep(2, 10))
 c3 <- gen_clust(100, 10, mean= rep(10, 10), sd= rep(1, 10))
-c_tot <- rbind(c1,c2,c3); rm(c1,c2,c3)}
+c_tot <- rbind(c1,c2,c3); rm(c1,c2,c3)
+# run example
 mvn <- em_clust_mvn(c_tot, nclust= 3)
 }
 \seealso{

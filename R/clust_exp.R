@@ -13,8 +13,10 @@
 #' log likelihood of the data; \code{bic} the modeled BIC.
 #' @export
 #' @examples
-#' \dontshow{c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100); 
-#' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)}
+#' # generate test data
+#' c1 <- rexp(100, 1); c2 <- rexp(100, 50); c3 <- rexp(100, 100); 
+#' c_tot <- c(c1, c2, c3); rm(c1,c2,c3)
+#' # run example
 #' exp_clust <- em_clust_exp(c_tot, nclust= 3)
 
 em_clust_exp <- function(data, nclust, itmax= 10000, tol= 10^-6) {  
