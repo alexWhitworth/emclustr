@@ -6,7 +6,7 @@
 #' @param data An `n x p` data matrix or data frame.
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
-#' @param tol Tuning parameter for convergence. Defaults to 10^-6.
+#' @param tol Tuning parameter for convergence. Defaults to 10^-8.
 #' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
 #' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
 #' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
@@ -22,9 +22,16 @@
 #' # run example
 #' mvn <- em_clust_mvn(c_tot, nclust= 3)
 
-em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
-  # 01. initiate values
+em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-8) {
   data <- data.matrix(data) # coerce
+  
+  if (!is.numeric(data)) {
+    stop("Please input numeric data.")
+  }
+  if (itmax < 1 | itmax %% 1 != 0) stop("it_max must be a positive integer.")
+  if (nclust < 1 | nclust %% 1 != 0) stop("nclust must be a positive integer.")
+  
+  # 01. initiate values
   n      <- nrow(data); p <- ncol(data); it <- 1
   mu_sq <- lam_1  <- cdist <- vector(mode= "numeric", length= nclust)
   # cluster proportions
@@ -70,7 +77,7 @@ em_clust_mvn <- function(data, nclust, itmax= 10000, tol= 10^-6) {
       # build list of distributional parameters for return
       out <- list()
       for (i in 1:nclust) { 
-        assign(paste0("N_", i), list(mu= mu1[i,], Sigma= sig_1[i]))
+        assign(paste0("N_", i), list(mu= mu1[i,], sigma= sig_1[i]))
         out[[i]] <- get(paste0("N_", i)) 
       }
       m_max <- apply(w_mat, 1, which.max)

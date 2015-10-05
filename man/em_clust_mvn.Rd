@@ -4,7 +4,7 @@
 \alias{em_clust_mvn}
 \title{Clustering for Multivariate Normal data via EM}
 \usage{
-em_clust_mvn(data, nclust, itmax = 10000, tol = 10^-6)
+em_clust_mvn(data, nclust, itmax = 10000, tol = 10^-8)
 }
 \arguments{
 \item{data}{An `n x p` data matrix or data frame.}
@@ -13,7 +13,7 @@ em_clust_mvn(data, nclust, itmax = 10000, tol = 10^-6)
 
 \item{itmax}{The maximum number of iterations allowed. Defaults to 10000.}
 
-\item{tol}{Tuning parameter for convergence. Defaults to 10^-6.}
+\item{tol}{Tuning parameter for convergence. Defaults to 10^-8.}
 }
 \value{
 A list containing: \code{it} the number of iterations; \code{clust_prop}

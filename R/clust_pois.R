@@ -5,7 +5,7 @@
 #' @param data An n-length vector. Must not be character.
 #' @param nclust The number of clusters.
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
-#' @param tol Tuning parameter for convergence. Defaults to 10^-6.
+#' @param tol Tuning parameter for convergence. Defaults to 10^-8.
 #' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
 #' the estimated mixture proportions; \code{clust_params} the estimated mixture parameters; 
 #' \code{mix_est} a vector of the estimated mixture for each data point; \code{log_lik} the 
@@ -18,10 +18,12 @@
 #' # run example
 #' pois <- em_clust_pois(c_tot, nclust= 3) 
 
-em_clust_pois <- function(data, nclust, itmax= 10000, tol= 10^-6) {  
-  if (typeof(data) == "character") {
+em_clust_pois <- function(data, nclust, itmax= 10000, tol= 10^-8) {  
+  if (!is.numeric(data)) {
     stop("Please input numeric data.")
   }
+  if (itmax < 1 | itmax %% 1 != 0) stop("it_max must be a positive integer.")
+  if (nclust < 1 | nclust %% 1 != 0) stop("nclust must be a positive integer.")
   
   # 01. initiate values
   n      <- length(data); it <- 1
