@@ -1,4 +1,5 @@
 language: r
+r: devel
 cache: packages
 
 notifications:
