@@ -45,9 +45,9 @@ test_that("em_clust_exp is converging", {
   iter8 <- em_clust_exp(c_tot, nclust= nclust, itmax= 8)
   
   ## test
-  expect_less_than(iter2$log_lik, iter4$log_lik)
-  expect_less_than(iter4$log_lik, iter6$log_lik)
-  expect_less_than(iter6$log_lik, iter8$log_lik)
+  expect_lt(iter2$log_lik, iter4$log_lik)
+  expect_lt(iter4$log_lik, iter6$log_lik)
+  expect_lt(iter6$log_lik, iter8$log_lik)
 })
 
 test_that("... does converge before itmax", {
@@ -57,5 +57,5 @@ test_that("... does converge before itmax", {
   itmax <- 10000
   test_exp <- em_clust_exp(c_tot, nclust= 3, itmax= itmax)
   
-  expect_less_than(test_exp$it, itmax)
+  expect_lt(test_exp$it, itmax)
 })

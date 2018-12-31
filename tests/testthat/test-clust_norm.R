@@ -42,12 +42,12 @@ test_that("... is converging", {
   nclust <- 3
   
   iter1 <- em_clust_norm(c_tot, nclust= nclust, itmax= 1)
-  iter2 <- em_clust_norm(c_tot, nclust= nclust, itmax= 2)
   iter3 <- em_clust_norm(c_tot, nclust= nclust, itmax= 3)
+  iter5 <- em_clust_norm(c_tot, nclust= nclust, itmax= 5)
   
   ## test
-  expect_less_than(iter1$log_lik, iter2$log_lik)
-  expect_less_than(iter2$log_lik, iter3$log_lik)
+  expect_lte(iter1$log_lik, iter3$log_lik)
+  expect_lte(iter3$log_lik, iter5$log_lik)
 })
 
 test_that("... does converge before itmax", {
@@ -57,5 +57,5 @@ test_that("... does converge before itmax", {
   itmax <- 10000
   test <- em_clust_norm(c_tot, nclust= 3, itmax= itmax)
   
-  expect_less_than(test$it, itmax)
+  expect_lt(test$it, itmax)
 })

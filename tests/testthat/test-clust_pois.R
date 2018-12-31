@@ -41,10 +41,10 @@ test_that("... is converging", {
   nclust <- 3
   
   iter2 <- em_clust_pois(c_tot, nclust= nclust, itmax= 2)
-  iter3 <- em_clust_pois(c_tot, nclust= nclust, itmax= 3)
+  iter4 <- em_clust_pois(c_tot, nclust= nclust, itmax= 4)
   
   ## test
-  expect_less_than(iter2$log_lik, iter3$log_lik)
+  expect_lte(iter2$log_lik, iter4$log_lik)
 })
 
 test_that("... does converge before itmax", {
@@ -54,5 +54,5 @@ test_that("... does converge before itmax", {
   itmax <- 10000
   test <- em_clust_pois(c_tot, nclust= 3, itmax= itmax)
   
-  expect_less_than(test$it, itmax)
+  expect_lt(test$it, itmax)
 })

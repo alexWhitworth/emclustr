@@ -63,8 +63,8 @@ test_that("... is converging", {
   iter3 <- em_clust_mvn_miss(c_tot, nclust= nclust, itmax= 3)
   
   ## test
-  expect_less_than(iter1$pseudo_log_lik, iter2$pseudo_log_lik)
-  expect_less_than(iter2$pseudo_log_lik, iter3$pseudo_log_lik)
+  expect_lte(iter1$pseudo_log_lik, iter2$pseudo_log_lik)
+  expect_lte(iter2$pseudo_log_lik, iter3$pseudo_log_lik)
 })
 
 test_that("... does converge before itmax", {
@@ -82,5 +82,5 @@ test_that("... does converge before itmax", {
   
   test <- em_clust_mvn_miss(c_tot, nclust= 3, itmax= itmax)
   
-  expect_less_than(test$it, itmax)
+  expect_lt(test$it, itmax)
 })
