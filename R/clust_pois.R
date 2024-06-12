@@ -4,6 +4,7 @@
 #' where each component is \eqn{pois(\lambda)}.
 #' @param data An n-length vector. Must not be character.
 #' @param nclust The number of clusters.
+#' @param mu_init Optional. Vector of initial cluster means
 #' @param itmax The maximum number of iterations allowed. Defaults to 10000.
 #' @param tol Tuning parameter for convergence. Defaults to 10^-8.
 #' @return A list containing: \code{it} the number of iterations; \code{clust_prop}
@@ -18,7 +19,7 @@
 #' # run example
 #' pois <- em_clust_pois(c_tot, nclust= 3) 
 
-em_clust_pois <- function(data, nclust, itmax= 10000, tol= 10^-8) {  
+em_clust_pois <- function(data, nclust, mu_init=NULL, itmax= 10000, tol= 10^-8) {  
   if (!is.numeric(data)) {
     stop("Please input numeric data.")
   }
@@ -33,11 +34,15 @@ em_clust_pois <- function(data, nclust, itmax= 10000, tol= 10^-8) {
   # cluster proportions
   lam_0  <- c(rep(1/nclust, nclust));
   # cluster means
-  mu_0 <- vector(mode= "numeric", length= nclust)
-  init_m <- quantile(data, seq(0,1, 1/nclust))
-  for (i in 1:nclust) {
-    mu_0[i] <- runif(1, min= init_m[i], max= init_m[i+1])
-  }  
+  if (is.null(mu_init) || length(mu_init) != nclust) {
+      mu_0 <- vector(mode= "numeric", length= nclust)
+      init_m <- quantile(data, seq(0,1, 1/nclust))
+      for (i in 1:nclust) {
+          mu_0[i] <- runif(1, min= init_m[i], max= init_m[i+1])
+      }      
+  } else {
+      mu_0 = mu_init
+  }
   
   # 02. iterate to convergence:
   repeat{

@@ -4,12 +4,14 @@
 \alias{em_clust_pois}
 \title{Mixture modeling of poisson distributed data.}
 \usage{
-em_clust_pois(data, nclust, itmax = 10000, tol = 10^-8)
+em_clust_pois(data, nclust, mu_init = NULL, itmax = 10000, tol = 10^-8)
 }
 \arguments{
 \item{data}{An n-length vector. Must not be character.}
 
 \item{nclust}{The number of clusters.}
+
+\item{mu_init}{Optional. Vector of initial cluster means}
 
 \item{itmax}{The maximum number of iterations allowed. Defaults to 10000.}
 
