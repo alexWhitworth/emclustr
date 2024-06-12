@@ -1,6 +1,6 @@
 Package: emclustr
 Title: Mixture Modeling for Model-Based Clustering and Classification
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: "Alex Whitworth <whitworth.alex@gmail.com> [aut, cre]"
 Description: emclustr is a package for finite mixture modeling via EM
     algorithm. Its main extensions to the "mclust" package are (1) mixture
@@ -17,3 +17,5 @@ References: C. Fraley, A. E. Raftery, T. B. Murphy and L. Scrucca (2012).
     Classification, and Density Estimation. Technical Report No. 597,
     Department of Statistics, University of Washington.
 LazyData: true
+Encoding: UTF-8
+RoxygenNote: 7.2.3
